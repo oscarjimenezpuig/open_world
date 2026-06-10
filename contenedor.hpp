@@ -1,7 +1,7 @@
 // MUNDO_LIBRE 6-6-26
 // Clase contenedor con todo los metodos y almacenamiento
 
-#include "objeto.h"
+#include "objeto.hpp"
 
 constexpr unsigned short INF=65535;
 

@@ -1,6 +1,6 @@
 // MUNDO_LIBRE 6-6-26
 
-#include "contenedor.h"
+#include "contenedor.hpp"
 
 Array<Contenedor> contenedores;
 
@@ -94,6 +94,5 @@ void Contenedor::info() {
     for(short e:this->con) std::cout<<e<<" ";
     std::cout<<std::endl;
 }
-
 
 

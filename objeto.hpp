@@ -2,7 +2,7 @@
 
 //Objeto es una clase que solo contiene la identidad, todas las clases la contienen
 
-#include "template.h"
+#include "template.hpp"
 
 class Objeto{
     private:

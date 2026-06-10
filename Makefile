@@ -82,6 +82,6 @@ check:
 #MAKEFILE VARIABLE
 
 NAME = mundo_abierto 
-SCRS = objeto.cpp contenedor.cpp nombre.cpp
+SCRS = objeto.cpp contenedor.cpp nombre.cpp abrible.cpp habitacion.cpp
 INCLUDES = #-lX11
 

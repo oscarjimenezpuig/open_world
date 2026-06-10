@@ -1,7 +1,7 @@
 // MUNDO_LIBRE 6-6-26
 // Templates utilizados en el programa
 
-#include "aventura.h"
+#include "aventura.hpp"
 
 //template Array que guarda objetos por el identificador ide.
 

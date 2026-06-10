@@ -1,6 +1,6 @@
 // MUNDO_LIBRE 7-6-26
 
-#include"objeto.h"
+#include"objeto.hpp"
 
 bool Objeto::set(short ide) {
     if(ide>=0) {

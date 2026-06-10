@@ -1,6 +1,6 @@
 // MUNDO_LIBRE 7-6-26
 
-#include "nombre.h"
+#include "nombre.hpp"
 
 Array<Nombre> nombres;
 
@@ -39,14 +39,4 @@ void Nombre::info() {
 
 
 
-//PRUEBA
 
-int main() {
-    Nombre* a=Nombre::set(0,"Oscar");
-    Nombre* b=Nombre::set(1,"Patricio Lopez");
-    Nombre* c=Nombre::set(2,"Pico","Famulo","Es un tio bien plantado");
-    nombres.info();
-    return 0;
-}
-
-      

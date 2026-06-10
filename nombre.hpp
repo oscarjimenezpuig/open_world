@@ -1,7 +1,7 @@
 // MUNDO_LIBRE 7-6-26
 // Guarda los nombres, adjetivos y descripcion de los objetos
 
-#include "contenedor.h"
+#include "contenedor.hpp"
 
 class Nombre: public Objeto {
     private:
