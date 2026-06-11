@@ -7,14 +7,17 @@
 #include <array>
 #include <string>
 #include <utility>
+#include <cstdint>
+
+//CONSTANTES
+
+constexpr unsigned short ARRDIM=256; // maxima dimension de objetos contenidos en un array
 
 //TEMPLATES
 
 // Templates utilizados en el programa
 
 //template Array que guarda objetos por el identificador ide.
-
-constexpr unsigned short ARRDIM=256; // maxima dimension de objetos contenidos en un array
 
 template<typename T>
 class Array {
@@ -42,24 +45,77 @@ class Array {
         }
 };
 
+//IDENTIFICABLE
+
+//clase que contiene la identidad y metodos para obtenerla
+
+class Identificable {
+    protected:
+        short ide;
+    public:
+        short ide_get();
+        void info();
+};
+
+//CONTENEDOR
+
+// Clase contenedor con todo los metodos y almacenamiento.
+// Un contenedor puede ser o no un objeto, si no lo es, no puede ser contenido.
+
+class Contenedor:public Identificable {
+    private:
+        unsigned short cap; //capacidad (peso total soportado
+        std::vector<short> con; //vector del contenido
+    public:
+        bool vis; //dice si el contenido es visible o no
+        static Contenedor* set(short ide,unsigned short cap);
+        void vis_set(bool vis); //establecemos el valor de la variable vis
+        unsigned short cap_get(); //capacidad total
+        unsigned short pec_get(); //obtenemos peso de todo el contenido
+        bool vis_get(); //conseguimos el valor de la variable vis
+        short con_has(short ide); //mira si un objeto ide esta contenido (devuelve el indice o -1 si no encontrado)
+        unsigned short con_siz(); //numero de objetos contenidos
+        short inserta(short id); //El contenedor recibe un objeto
+                             //0: Insercion correcta
+                             //-1: Exceso peso
+                             //-2: Objeto ya contenido
+                             //-3: No es objeto
+                             //-4: Identificador no valido
+        short quita(short id); //quita un contenido
+                               //0: quitado correcto
+                               //-1: no poseido por este contenedor
+                               //-2: id no valido
+        void info(); //muestra informacion
+};
+
+extern Array<Contenedor> contenedores;
+//contiene todos los contenedores definidos
+
 //OBJETO
 
-//Objeto es una clase que solo contiene la identidad, todas las clases la contienen
+//Objeto es una clase que contiene los de peso y del contenedor
+//Un objeto puede ser contenido, si tambien es contenedor puede contener
 
-class Objeto{
+class Objeto: public Identificable{
     private:
-        short ide; //guarda identificador
+        unsigned short pes; //guarda el peso
+        unsigned short ctn; //identidad del contenedor que lo contiene
     public:
-        bool set(short ide); //crea un nuevo objeto
-        short ide_get(); //muestra identificador
+        static Objeto* set(short ide,unsigned short pes); //crea un nuevo objeto
+        unsigned short pes_get(); //conseguimos el peso del objeto (teniendo en cuenta si es contenedor)
+        short ctn_get(); //conseguimos el contenedor
         void info(); //muestra informacion (solo la identidad)
+        friend Contenedor;
 };
+
+extern Array<Objeto> objetos;
+//guarda todos los objetos
 
 //NOMBRE
 
 // Guarda los nombres, adjetivos y descripcion de los objetos
 
-class Nombre: public Objeto {
+class Nombre: public Identificable {
     private:
         std::string nom; //nombre (obligatorio, diferente de vacio)
         std::string adj; //adjetivo o complemento del nombre (no obligatorio)
@@ -76,51 +132,11 @@ class Nombre: public Objeto {
 extern Array<Nombre> nombres;
 //contiene todos los nombres definidos
 
-//CONTENEDOR
-
-// Clase contenedor con todo los metodos y almacenamiento
-
-constexpr unsigned short INF=65535;
-
-class Contenedor:public Objeto {
-    private:
-        unsigned short vol; //volumen
-        unsigned short pes; //peso
-        unsigned short cap; //capacidad (peso total soportado
-        short ctn; //contenedor
-        std::vector<short> con; //vector del contenido
-        bool vis; //dice si el contenido es visible o no
-    public:
-        static Contenedor* set(short ide,unsigned short vol,unsigned short pes,unsigned short cap);
-        void vis_set(bool vis); //establecemos el valor de la variable vis
-        unsigned short vol_get(); //volumen
-        unsigned short pes_get(); //peso total, con el contenido incluido
-        unsigned short cap_get(); //capacidad total
-        bool vis_get(); //conseguimos el valor de la variable vis
-        short con_has(short ide); //mira si un objeto ide esta contenido (devuelve el indice o -1 si no encontrado)
-        unsigned short con_siz(); //numero de objetos contenidos
-        short ctn_get(); //identidad del contenedor
-        short inserta(short id); //El objeto recibe un contenedor
-                             //0: Insercion correcta
-                             //-1: Exceso de peso
-                             //-2: Exceso de volumen
-                             //-3: El contenido id ya tiene contenedor
-                             //-4: id no valido
-        short quita(short id); //quita un contenedor
-                               //0: quitado correcto
-                               //-1: no poseido por este contenedor
-                               //-2: id no valido
-        void info(); //muestra informacion
-};
-
-extern Array<Contenedor> contenedores;
-//contiene todos los contenedores definidos
-
 //ABRIBLE
 
 // Clase abrible con todo los metodos y almacenamiento
 
-class Abrible:public Objeto {
+class Abrible:public Identificable {
     private:
         short key; //identificador de llave si tiene
         bool opn; //dice si esta o no abierta;
@@ -145,7 +161,7 @@ extern Array<Abrible> abribles;
 
 // Clase habitacion con todo los metodos y almacenamiento
 
-class Salida:public Objeto {
+class Salida:public Identificable {
     private:
         std::string nom; //nombre de la salida
         short con; //identidad de la contrasalida (si existe)
@@ -159,7 +175,7 @@ class Salida:public Objeto {
 extern Array<Salida> salidas;
 //guarda todas las salidas disponibles
 
-class Habitacion:public Objeto {
+class Habitacion:public Identificable {
     private:
         std::vector<std::pair<short,short>> sal; //variable que guarda la identidad de la salida con la identidad del destino
     public:
@@ -176,3 +192,22 @@ class Habitacion:public Objeto {
 
 extern Array<Habitacion> habitaciones;
 //guarda todas las habitaciones disponibles
+
+//PSI
+
+// Clase psi que contiene todas las ordenes posibles
+
+class Psi:public Objeto {
+    private:
+        std::int8_t agr; //indica el nivel de agresividad del psi
+        std::int8_t vid; //indica el nivel de vida del psi
+        std::int8_t ata; //indica el nivel de ataque del psi
+        std::int8_t def; //indica el nivel de defensa del psi
+        std::int8_t com; //indica el nivel de comida de un psi
+
+};
+
+extern Array<Psi> psis;
+//guarda todos los psis posibles
+
+
