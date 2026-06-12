@@ -83,21 +83,24 @@ short Contenedor::inserta(short id) {
 
 short Contenedor::quita(short id) {
     if(id>=0) {
-        Contenedor* contenido=contenedores.get(id);
-        if(contenido->ctn==this->Identificable::ide_get()) {
-            short pos=this->con_has(id);
-            contenido->ctn=-1;
-            std::vector<short>::iterator ppos=this->con.begin()+pos;
-            this->con.erase(ppos);
+        std::vector<short>::iterator it=this->con.begin();
+        while(it!=this->con.end()) {
+            if(*it==id) break;
+            it++;
+        }
+        if(it!=this->con.end()) {
+            this->con.erase(it);
+            Objeto* o=objetos.get(id);
+            o->cnt=-1;
             return 0;
         } else return -1;
     } else return -2;
 }
 
 void Contenedor::info() {
+    std::cout<<"Contenedor ";
     Identificable::info();
-    std::cout<<"    VOL: "<<this->vol<<" PES: "<<this->pes_get()<<" CAP: "<<this->cap<<std::endl; 
-    std::cout<<"    Contenedor: "<<this->ctn<<std::endl;
+    std::cout<<"    CAP: "<<this->cap<<std::endl; 
     std::cout<<"    Contenido: "<<((this->vis)?"(Visible) ":"(No visible) ");
     for(short e:this->con) std::cout<<e<<" ";
     std::cout<<std::endl;
@@ -114,7 +117,7 @@ Objeto* Objeto::set(short ide,unsigned short pes) {
         po=objetos.insert(o);
         po->ide=ide;
         po->pes=pes;
-        po->ctn=-1;
+        po->cnt=-1;
     }
     return po;
 }
@@ -122,17 +125,18 @@ Objeto* Objeto::set(short ide,unsigned short pes) {
 unsigned short Objeto::pes_get() {
     unsigned short pes=this->pes;
     Contenedor* c=contenedores.get(this->ide);
-    if(c) pes=adpes(pes,c->get_pes());
+    if(c) pes=adpes(pes,c->pec_get());
     return pes;
 }
 
 short Objeto::ctn_get() {
-    return this->ctn;
+    return this->cnt;
 }
 
 void Objeto::info() {
+    std::cout<<"Objeto ";
     this->Identificable::info();
-    std::cout<<"    PES: "<<this->pes<<" CTN: "<<this->ctn<<std::endl;
+    std::cout<<"    PES: "<<this->pes<<" CTN: "<<this->cnt<<std::endl;
 }
 
 //NOMBRE
@@ -168,6 +172,7 @@ std::string Nombre::dsc_get() {
 }
 
 void Nombre::info() {
+    std::cout<<"Nombre ";
     this->Identificable::info();
     std::cout<<"    "<<this->nom<<" "<<this->adj<<": "<<this->dsc<<std::endl;
 }
@@ -224,6 +229,7 @@ short Abrible::cerrar() {
 }
 
 void Abrible::info() {
+    std::cout<<"Abrible ";
     this->Identificable::info();
     std::cout<<"    OPN: "<<this->opn<<" KEY: "<<this->key<<" BRO: "<<this->ibr<<std::endl;
 }
@@ -261,6 +267,7 @@ short Salida::con_get() {
 }
 
 void Salida::info() {
+    std::cout<<"Salida ";
     this->Identificable::info();
     std::cout<<"    "<<this->nom<<" CON: "<<this->con<<std::endl;
 }
@@ -309,9 +316,10 @@ short Habitacion::get_sal(short sal) {
 }
 
 void Habitacion::info() {
-   this->Identificable::info();
-   std::cout<<"    SLS: "<<this->sal.size()<<std::endl;
-   for(const auto &e : this->sal) {
+    std::cout<<"Habitacion ";
+    this->Identificable::info();
+    std::cout<<"    SLS: "<<this->sal.size()<<std::endl;
+    for(const auto &e : this->sal) {
        std::cout<<"    SAL: "<<e.first<<" DST: "<<e.second<<std::endl;
     }
 }
