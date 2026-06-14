@@ -8,10 +8,12 @@
 #include <string>
 #include <utility>
 #include <cstdint>
+#include <map>
 
 //CONSTANTES
 
 constexpr unsigned short ARRDIM=256; // maxima dimension de objetos contenidos en un array
+constexpr unsigned short INF=65535; //valor maximo considerado infinito de unsigned short
 
 //TEMPLATES
 
@@ -99,7 +101,7 @@ extern Array<Contenedor> contenedores;
 class Objeto: public Identificable{
     private:
         unsigned short pes; //guarda el peso
-        unsigned short ctn; //identidad del contenedor que lo contiene
+        unsigned short cnt; //identidad del contenedor que lo contiene
     public:
         static Objeto* set(short ide,unsigned short pes); //crea un nuevo objeto
         unsigned short pes_get(); //conseguimos el peso del objeto (teniendo en cuenta si es contenedor)

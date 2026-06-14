@@ -1,17 +1,26 @@
-#include "basic.hpp"
+#include "action.hpp"
+
+using namespace std;
 
 //PRUEBA
 
+short f_a(short id=0, vector<short> dat={}) {
+    cout<<"Hola"<<endl;
+    return 0;
+}
+
+short f_b(short id=0,vector<short> dat={}) {
+    cout<<"Adios"<<endl;
+    return 0;
+}
+
 int main() {
-    Salida* s=Salida::set(0,"NORTE");
-    Salida* t=Salida::set(1,"SUR");
-    s->con_set(1);
-    Habitacion* h=Habitacion::set(2,2);
-    Habitacion* i=Habitacion::set(3,2);
-    Habitacion* j=Habitacion::set(4,2);
-    std::cout<<h->set_sal(0,3,true)<<i->set_sal(0,4,true)<<std::endl;
-    salidas.info();
-    habitaciones.info();
+    vector<string> wds={"Hola","Ho"};
+    Action::set(wds,f_a);
+    Action::set("Adios",f_b);
+    Action::Function f=Action::get("Ho");
+    if(f) f(0,{});
+    else cout<<"No hay funcion"<<endl;
     return 0;
 }
 

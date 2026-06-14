@@ -82,6 +82,6 @@ check:
 #MAKEFILE VARIABLE
 
 NAME = mundo_abierto 
-SCRS = basic.cpp main.cpp
+SCRS = basic.cpp action.cpp main.cpp
 INCLUDES = #-lX11
 
